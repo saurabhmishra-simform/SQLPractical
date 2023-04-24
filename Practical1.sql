@@ -1,7 +1,7 @@
 /*----- Create product table ------*/
 CREATE TABLE Product
 (ProductId INT NOT NULL PRIMARY KEY IDENTITY(1,1),ProductName NVARCHAR(500) NOT NULL,
-Category NVARCHAR(500) NOT NULL,Price MONEY NOT NULL);
+Category NVARCHAR(500) NOT NULL,Price DECIMAL(10,2) NOT NULL);
 
 /*----- Add new column in product table ------*/
 ALTER TABLE Product ADD Discription NVARCHAR(500) NOT NULL;
@@ -34,4 +34,6 @@ SELECT SUM(price) AS TotalPrice FROM Product;
 SELECT ProductId,ProductName,Category,Price,Discription FROM Product ORDER BY price DESC;
 
 /*----- Query for display category wise product count having price greater than  10000 ------*/
+SELECT ProductName,Category,COUNT(Category) OVER (PARTITION BY Category) AS ProductCount FROM Product WHERE Price > 10000;
+--OR
 SELECT Category,COUNT(Category) AS ProductCount FROM Product WHERE Price > 10000 GROUP BY Category;

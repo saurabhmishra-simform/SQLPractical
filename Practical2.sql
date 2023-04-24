@@ -6,7 +6,7 @@ CREATE TABLE Department
 CREATE TABLE Employee
 (EmployeeId INT NOT NULL PRIMARY KEY IDENTITY(1,1),EmployeeName NVARCHAR(500) NOT NULL,
 DepartmentId INT NOT NULL  REFERENCES Department(DepartmentId),
-Experience DECIMAL(3,1) CHECK(Experience>0),Salary MONEY CHECK(Salary>0));
+Experience DECIMAL(3,1) CHECK(Experience>0),Salary DECIMAL(10,2) CHECK(Salary>0));
 
 -- Insert records in the Department table 
 INSERT INTO Department VALUES
@@ -48,7 +48,7 @@ ON Emp.DepartmentId = Dept.DepartmentId
 GROUP BY DepartmentName ORDER BY MaxSalary DESC;
 
 -- Join query for display employee name in the ascending order of department name
-SELECT EmployeeName,DepartmentName FROM Employee Emp 
+SELECT EmployeeName,SALARY,DepartmentName FROM Employee Emp 
 INNER JOIN Department Dept 
 ON Emp.DepartmentId = Dept.DepartmentId 
 ORDER BY DepartmentName ASC;
@@ -59,15 +59,15 @@ if employee has experience between 7 to 10 years then its grade is advanced
 if employee has experience between 5 to 7 years then its grade is intermediate
 if employee has experience between 2 to 5 year then its grade is beginner
 and for the rest of case display grade as novice*/
-SELECT EmployeeName, 
-	CASE 
-		WHEN Experience > 10 THEN 'Expert'
-		WHEN Experience > 7  THEN 'Advanced'
-		WHEN Experience > 5  THEN 'Intermediate'
-		WHEN Experience > 2 THEN 'Beginner'
-		ELSE 'Novice'
-	END AS grade 
-FROM Employee;  
+SELECT EmployeeName,Experience,
+    CASE 
+   		WHEN Experience > 10 THEN 'Expert'
+   		WHEN Experience BETWEEN 7 AND 10 THEN 'Advanced'
+   		WHEN Experience BETWEEN 5 AND 7 THEN 'Intermediate'
+   		WHEN Experience BETWEEN 2 AND 5 THEN 'Beginner'
+   		ELSE 'Novice'
+    END AS grade
+FROM Employee;
 
 
 
